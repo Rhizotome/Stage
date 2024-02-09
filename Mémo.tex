@@ -1,0 +1,97 @@
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper]{geometry}
+\usepackage{babel}
+\usepackage[]{amsmath}
+\usepackage[]{amsfonts}
+\usepackage{bbm}
+\usepackage[]{mathtools}
+\usepackage[]{amssymb}
+\usepackage{amsthm}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{bib.bib}
+\newtheorem{thm}{Theorem}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\supp}{supp}
+\begin{document}
+\subsection{Intro}
+Q.1: $\rho_\beta$ minimizes free energy.
+
+\begin{eqnarray*}
+   \rho_\beta:= \frac{e^{-\beta H}}{\Tr[e^{-\beta H}]}\\
+F_\beta(\rho):=\Tr[\rho H]-\beta^{-1}S(\rho)\\
+S(\rho):=-\Tr[\rho\log\rho]
+\end{eqnarray*}
+ We use the relative entropy $D(\rho\mid \sigma):=\Tr[\rho(\log \rho - \log  \sigma)]$ : it is nonnegative and zero iff $\rho=\sigma$.
+ Then :
+ $$
+ D(\rho\mid\rho_\beta)=\Tr[\rho(\log\rho-\log\rho_\beta)]=-S(\rho)+\beta\Tr[\rho H]+\log(Z).
+ $$
+ where $Z=\Tr[e^{-\beta H}]$.
+ 
+ Q.2: Among states with same energy ($\Tr[H\rho]$), $\rho_\beta$ maximizes entropy.
+ We differentiate the entropy on the submanifold of quantum states with energy $E$.
+ When $B$ is invertible, we have : $$
+ dS(k)\vert_{\rho}=-\Tr[k\log \rho]-\Tr[k\rho\rho^{-1}]
+ $$
+ Because on the tangent space, $\Tr[k]=0$ and $\Tr[kH]=0$, we get that $$
+ \Hess S(k)\vert_{\rho}=-\Tr[k^2\rho^{-1}]<0
+ $$
+ and $$
+ dS(k)\vert_{\rho_\beta}=\beta\Tr[kH]=0.
+ $$
+ By concavity, $\rho_\beta$ is thus the only minimizer of $S$ with the same energy.
+ 
+ \subsection{Proof of the bound given by \cite{froehlichPropertiesCorrelationsQuantum2015}}
+ 
+ This whole section is based on two articles, \cite{froehlichPropertiesCorrelationsQuantum2015} and \cite{ueltschiClusterExpansionsCorrelation2005}.
+ 
+ We work on $\Lambda\Subset \mathbb{Z}^d$, with the Hamiltonian $H_\Lambda=\sum_{X\subset \Lambda} \Phi_X$ where for $X$ in $\Lambda$, $\Phi_X$ is a bounded operator on $$\mathcal H_X:=\bigotimes_{x\in X}\mathcal H_x, \mathcal{H}_x\approx\mathbb C^N.$$
+ 
+ We are interested in the correlation between observables residing in disjoint regions of $\Lambda$.
+ An observable is a bounded operator on $\mathcal H_\Lambda$.
+ We write $\supp(A)$ and call {\it support of $A$} the smallest set $X\subset \Lambda$ such that $$A=A’\otimes\bigotimes_{x\in \Lambda^C}\mathbbm 1,$$ where $A’$ is a bounded operator on $\mathcal H_X$.
+ 
+ The expectation of an observable $A$ is defined as follows :
+ $$
+ \langle A \rangle := \frac{1}{Z_\Lambda}\tr Ae^{\beta H_\Lambda}
+ $$
+ where $\tr M:=\frac{\Tr M}{\dim(\mathcal H_\Lambda)}$ and $Z_\Lambda$, the {\it partition function}, is equal to $\tr e^{\beta H_\Lambda}$.
+ 
+ With these definitions, we can state the following theorem, which shows that the correlation between regions of fixed size decreases exponentially with their distance in the following sense :
+ \begin{thm}
+     Let $b$ be a nonnegative function of the finite subsets of $\mathbb Z^d$.
+     If we assume that 
+     $$\beta\sup_{x\in\mathbb Z^d}\sum_{X\ni x}\lVert\Phi_X\rVert e^{\frac{3}{2}a|X|+b(X)}$$ 
+     for some $a>0$, then 
+     $$|\langle AB\rangle - \langle A\rangle\langle B\rangle|\leq k(A,B)e^{-\mu(\supp A,\supp B)}$$
+     where $$k(A,B):=\lVert A\rVert\lVert B\rVert(a\abs{\supp A}+a\abs{\supp B} + 3a^2\abs{\supp A}\abs{\supp B})$$ and 
+     $$
+     \mu(X,Y):= \min_{n\geq 1} \min_{\substack{X=X_0,X_1,\ldots,X_n=Y \\ \forall i=0,\ldots,n-1, X_i\cap X_{i+1}\neq \varnothing}} b(X_1)+\ldots+b(X_{n-1}).
+     $$
+ \end{thm}
+ \begin{proof}
+     We begin with the {\it cluster expansion} of an expectation :
+     \begin{align*}
+         \tr Ae^{\beta H_\Lambda}=&\sum_{n>0}\frac{1}{n!}(\beta H_\Lambda)^n\\
+         =&\sum_{n>0}\frac{\beta^n}{n!}\sum_{(X_1,\ldots, X_n)\subset \Lambda^n}\tr\Phi_{X_1}\ldots\Phi_{X_n}
+     \end{align*}
+     Observe that if $X$ and $Y$ are disjoint finite subsets of $\mathbb Z^d$, $\tr \Phi_X\Phi_Y=\tr \Phi_X \tr\Phi_Y$ and $\Phi_X$ and $\Phi_Y$ commute.
+     This motivates the following decomposition :
+     
+ \end{proof}
+ 
+ 
+ 
+ \printbibliography
+\end{document}
