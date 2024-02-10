@@ -20,9 +20,11 @@ sorting=ynt
 \addbibresource{bib.bib}
 \newtheorem{thm}{Theorem}
 \DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\disj}{disjoint}
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Hess}{Hess}
 \DeclareMathOperator{\supp}{supp}
+\newcommand\formeq{\stackrel{\mathclap{\normalfont\mbox{F}}}{=}}
 \begin{document}
 \subsection{Intro}
 Q.1: $\rho_\beta$ minimizes free energy.
@@ -81,16 +83,32 @@ S(\rho):=-\Tr[\rho\log\rho]
      $$
  \end{thm}
  \begin{proof}
-     We begin with the {\it cluster expansion} of an expectation :
+     We begin with the {\it cluster expansion} of the partition function :
      \begin{align*}
-         \tr Ae^{\beta H_\Lambda}=&\sum_{n>0}\frac{1}{n!}(\beta H_\Lambda)^n\\
+         \tr e^{\beta H_\Lambda}=&\sum_{n>0}\frac{1}{n!}(\beta H_\Lambda)^n\\
          =&\sum_{n>0}\frac{\beta^n}{n!}\sum_{(X_1,\ldots, X_n)\subset \Lambda^n}\tr\Phi_{X_1}\ldots\Phi_{X_n}
      \end{align*}
      Observe that if $X$ and $Y$ are disjoint finite subsets of $\mathbb Z^d$, $\tr \Phi_X\Phi_Y=\tr \Phi_X \tr\Phi_Y$ and $\Phi_X$ and $\Phi_Y$ commute.
     This motivates the decomposition of the product into {\it clusters}.
-    We see the finite subsets of $\mathbb Z^d$ as the vertices of a graph with an edge between $X$ and $Y$ if and only if $X\cap Y\neq \varnothing$; its connected subgraphs are called clusters.
-    By summing over the cluster, we get 
- \end{proof}
+    We see the finite subsets of $\mathbb Z^d$ as the vertices of a graph with an edge between $X$ and $Y$ if and only if $X\cap Y\neq \varnothing$; if it has a (nonempty) subgraph with vertices $X_1,\ldots,X_n$, we call $(X_1,\ldots,X_n)$ a cluster.
+    We write $\mathcal C_\Lambda$ for the set of clusters over $\Lambda$.
+    By summing over clusters, we get 
+    \begin{align*}
+        \tr e^{\beta H_\Lambda}=&\sum_{n\geq0}\frac {\beta^n} {n!} \sum_{k\geq 0}\frac{1}{k!}\sum_{\substack{C_1,\ldots,C_k\in\mathcal C_\Lambda \disj\\\abs{C_1}+\ldots+\abs{C_k}=n}}\binom{n}{\abs{C_1},\ldots,\abs{C_k}}\prod_{i=1,\ldots,k}\tr\prod_{X\in C_i}\Phi_X.
+    \end{align*}
+    The multinomial coefficient $\binom{n}{\abs{C_1},\ldots,\abs{C_k}}=\frac{n!}{\abs{C_1}!\ldots\abs{C_k}!}$ accounts for the order of the elements inside the clusters, and $\frac{1}{k!}$ for the order of the clusters.
+    We can distribute the factorials and the $\beta^n$ : we write for a cluster $C=(X_1,\ldots,X_p)$
+    $$
+    w(C):=\frac {\beta^p}{p!}\tr \Phi_{X_1}\ldots\Phi_{X_p}
+    $$
+    and thus get 
+    \begin{align*}
+        \tr e^{\beta H_\Lambda}=&\sum_{n\geq0}\sum_{k\geq 0}\frac 1{k!}\sum_{\substack{C_1,\ldots,C_k\in\mathcal C_\Lambda \disj\\\abs{C_1}+\ldots+\abs{C_k}=n}}w(C_1)\ldots w(C_k)\\
+        \formeq&\sum_{k\geq 0}\frac 1{k!} \sum_{\substack{C_1,\ldots,C_k\in\mathcal C_\Lambda\\\disj}}w(C_1)\ldots w(C_k).
+    \end{align*}
+    The $\formeq$ symbol is used to indicate that it’s a formal sum : we need absolute convergence to be able to swap the sums. 
+    The proof of the absolute convergence is handled in \cite{friedliChapterClusterExpansion2017}, which allows us to remove the $\text{F}$.
+     \end{proof}
  
  
  
