@@ -3,13 +3,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[a4paper]{geometry}
-\usepackage{babel}
 \usepackage[]{amsmath}
 \usepackage[]{amsfonts}
 \usepackage{bbm}
 \usepackage[]{mathtools}
+\usepackage{hyperref}
+\usepackage[]{cleveref}
 \usepackage[]{amssymb}
 \usepackage{amsthm}
+\usepackage[bb=boondox]{mathalfa}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
 \usepackage[
@@ -19,6 +21,11 @@ sorting=ynt
 ]{biblatex}
 \addbibresource{bib.bib}
 \newtheorem{thm}{Theorem}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
+\newtheorem{lem}{Lemma}
+\crefname{lem}{lemma}{lemmas}
+\Crefname{lem}{Lemma}{Lemmas}
 \DeclareMathOperator{\Tr}{Tr}
 \DeclareMathOperator{\disj}{disjoint}
 \DeclareMathOperator{\tr}{tr}
@@ -62,7 +69,7 @@ S(\rho):=-\Tr[\rho\log\rho]
  
  We are interested in the correlation between observables residing in disjoint regions of $\Lambda$.
  An observable is a bounded operator on $\mathcal H_\Lambda$.
- We write $\supp(A)$ and call {\it support of $A$} the smallest set $X\subset \Lambda$ such that $$A=A’\otimes\bigotimes_{x\in \Lambda^C}\mathbbm 1,$$ where $A’$ is a bounded operator on $\mathcal H_X$.
+ We write $\supp A$ and call {\it support of $A$} the smallest set $X\subset \Lambda$ such that $$A=A’\otimes\bigotimes_{x\in \Lambda^C}\mathbbm 1,$$ where $A’$ is a bounded operator on $\mathcal H_X$.
  
  The expectation of an observable $A$ is defined as follows :
  $$
@@ -72,6 +79,7 @@ S(\rho):=-\Tr[\rho\log\rho]
  
  With these definitions, we can state the following theorem, which shows that the correlation between regions of fixed size decreases exponentially with their distance in the following sense :
  \begin{thm}
+     \label{thm:exp_decay_of_correlations}
      Let $b$ be a nonnegative function of the finite subsets of $\mathbb Z^d$.
      If we assume that 
      $$\beta\sup_{x\in\mathbb Z^d}\sum_{X\ni x}\lVert\Phi_X\rVert e^{\frac{3}{2}a|X|+b(X)}$$ 
@@ -82,15 +90,15 @@ S(\rho):=-\Tr[\rho\log\rho]
      \mu(X,Y):= \min_{n\geq 1} \min_{\substack{X=X_0,X_1,\ldots,X_n=Y \\ \forall i=0,\ldots,n-1, X_i\cap X_{i+1}\neq \varnothing}} b(X_1)+\ldots+b(X_{n-1}).
      $$
  \end{thm}
- \begin{proof}
+    We will need a few results to prove this theorem.
      We begin with the {\it cluster expansion} of the partition function :
      \begin{align*}
          \tr e^{\beta H_\Lambda}=&\sum_{n>0}\frac{1}{n!}(\beta H_\Lambda)^n\\
          =&\sum_{n>0}\frac{\beta^n}{n!}\sum_{(X_1,\ldots, X_n)\subset \Lambda^n}\tr\Phi_{X_1}\ldots\Phi_{X_n}
      \end{align*}
      Observe that if $X$ and $Y$ are disjoint finite subsets of $\mathbb Z^d$, $\tr \Phi_X\Phi_Y=\tr \Phi_X \tr\Phi_Y$ and $\Phi_X$ and $\Phi_Y$ commute.
-    This motivates the decomposition of the product into {\it clusters}.
-    We see the finite subsets of $\mathbb Z^d$ as the vertices of a graph with an edge between $X$ and $Y$ if and only if $X\cap Y\neq \varnothing$; if it has a (nonempty) subgraph with vertices $X_1,\ldots,X_n$, we call $(X_1,\ldots,X_n)$ a cluster.
+    This motivates the decomposition of the product into clusters.
+    We see the finite subsets of $\mathbb Z^d$ as the vertices of a graph with an edge between $X$ and $Y$ if and only if $X\cap Y\neq \varnothing$; if it has a subgraph with vertices $X_1,\ldots,X_n$, we call $(X_1,\ldots,X_n)$ a {\it cluster}.
     We write $\mathcal C_\Lambda$ for the set of clusters over $\Lambda$.
     By summing over clusters, we get 
     \begin{align*}
@@ -133,7 +141,7 @@ S(\rho):=-\Tr[\rho\log\rho]
             \forall i=1,\ldots,n, \supp C_i\cap M =\varnothing
             }}w(C_1)\ldots w(C_n)
     \end{align*}
-    where the support of a cluster $C=(X_1,\ldots,X_p)$ is $\supp C:=\supp X_1\cap\ldots\cap\supp X_p$
+    where the support of a cluster $C=(X_1,\ldots,X_p)$ is $\supp C:=\supp X_1\cap\ldots\cap\supp X_p$.
     If $M=\varnothing$, we get $Z_\lambda$, which explains the notation.
     
     We can then write :
@@ -145,7 +153,29 @@ S(\rho):=-\Tr[\rho\log\rho]
     \begin{align*}
         \langle AB\rangle=& \sum_{C_{A},C_B}w_A(C_A)w_B(C_B)\frac{Z_\Lambda(\supp C_A \cup \supp C_B)}{Z_\Lambda}+\sum_{C_{AB}}w_{AB}(C_{AB})\frac{Z_\Lambda(\supp C_{AB})}{Z_\Lambda}.
     \end{align*}
-\end{proof}
+    We can now use the following lemma :
+    \begin{lem}
+        Under the same hypotheses as in \cref{thm:exp_decay_of_correlations},
+        \begin{align*}
+            \frac{Z_\Lambda(\supp C_A\cup \supp C_B)}{Z_\Lambda}&=\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B)+\hat Z_\Lambda(C_A,C_B)
+        \end{align*}
+        where \begin{align*}
+            \hat Z_\Lambda(C_A)&:=\sum_{k\geq 0}(k+1)\sum_{C_1,\ldots,C_k}\varphi(C_A,C_1,\ldots,C_k)w(C_1)\ldots w(C_k)\\
+            \hat Z_\Lambda(C_A,C_B)&:=\sum_{k\geq 0}(k+1)(k+2)\sum_{C_1,\ldots,C_k}\varphi(C_A,C_B,C_1,\ldots,C_k)w(C_1)\ldots w(C_k),\\
+            \varphi(C_1,\ldots,C_n)&:=\begin{cases}
+                1&\textnormal{if $n=1$,}\\
+                \sum_{g\in \textnormal{Conn}(n)}\prod_{\{i,j\}\in g}(-\mathbbm 1_{\supp C_i\cap \supp C_j\neq \varnothing})&\textnormal{else.}
+            \end{cases}
+        \end{align*}
+        $\textnormal{Conn}(n)$ denotes here the set of connected graphs over the vertices $\{1,\ldots,n\}$ and the product is taken over the edges of $g$.
+    \end{lem}
+    With the convention that $\Phi_\varnothing=\mathbbm0$ and $\tr \Phi_\varnothing=0$, this also gives us $$
+        \frac{Z_\Lambda(\supp C_A)}{Z_\Lambda}=\frac{Z_\Lambda(\supp C_A\cup \supp (\varnothing))}{Z_\Lambda}=\hat Z_\Lambda(C_A)\times\mathbbm 1+ \mathbb 0,
+    $$
+    because $\varphi((\varnothing))=1$ and $\varphi((\varnothing),C_1,\ldots,C_k)=0$.
+    \begin{proof}
+        
+    \end{proof}
  
  
  
