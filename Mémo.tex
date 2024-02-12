@@ -75,7 +75,7 @@ S(\rho):=-\Tr[\rho\log\rho]
      Let $b$ be a nonnegative function of the finite subsets of $\mathbb Z^d$.
      If we assume that 
      $$\beta\sup_{x\in\mathbb Z^d}\sum_{X\ni x}\lVert\Phi_X\rVert e^{\frac{3}{2}a|X|+b(X)}$$ 
-     for some $a>0$, then 
+     for some $a>0$, then for any two bounded operators $A,B$ on $\mathcal H_\Lambda$
      $$|\langle AB\rangle - \langle A\rangle\langle B\rangle|\leq k(A,B)e^{-\mu(\supp A,\supp B)}$$
      where $$k(A,B):=\lVert A\rVert\lVert B\rVert(a\abs{\supp A}+a\abs{\supp B} + 3a^2\abs{\supp A}\abs{\supp B})$$ and 
      $$
@@ -108,7 +108,44 @@ S(\rho):=-\Tr[\rho\log\rho]
     \end{align*}
     The $\formeq$ symbol is used to indicate that it’s a formal sum : we need absolute convergence to be able to swap the sums. 
     The proof of the absolute convergence is handled in \cite{friedliChapterClusterExpansion2017}, which allows us to remove the $\text{F}$.
-     \end{proof}
+    
+    We can obtain a very similar formula for $\tr Ae^{\beta H_\Lambda}$ :
+    \begin{equation*}
+        \tr Ae^{\beta H_\Lambda}=\sum_{k\geq 0}\frac 1 {k!} \sum_{\substack{C_A,C_1,\ldots,C_k\\\disj}}w_A(C_A)w(C_1)\ldots w(C_k)
+    \end{equation*}
+    where $C_A$ is a cluster of the form $(\supp A,X_1,\ldots,X_p)$ and $$
+        w_A(C_A):=\frac{\beta^n}{n!}\tr A\Phi_{X_1}\ldots\Phi_{X_n},
+    $$
+    and for $\tr ABe^{\beta H_\Lambda}$ :\begin{align*}
+        \tr ABe^{\beta H_\Lambda}=&\sum_{k\geq 0}\frac 1 {k!} \sum_{\substack{C_A,C_B,C_1,\ldots,C_k\\\disj}}w_A(C_A)w_B(C_B)w(C_1)\ldots w(C_k)\\
+        &+\sum_{k\geq 0}\frac 1 {k!} \sum_{\substack{C_{AB},C_1,\ldots,C_k\\\disj}}w_{AB}(C_{AB})w(C_1)\ldots w(C_k)
+        \end{align*}
+        where $C_{AB}$ is a cluster of the form $(\supp A, \supp B,X_1,\ldots,X_p)$ and
+        $$
+        w_{AB}(C_{AB}):=\frac{\beta^n}{n!}\tr AB\Phi_{X_1}\ldots\Phi_{X_n}.
+        $$
+        The two sums correspond to the cases in which $A$ and $B$ intersect respectively different clusters or the same cluster.
+     
+    In order to divide by $Z_\Lambda$, we introduce the following notation : for $M\subset \Lambda$ we write
+    \begin{align*}
+        Z_\Lambda(M)&:=\sum_{n\geq0}\frac 1{n!} \sum_{\substack{
+            C_1,\ldots,C_n \disj\\
+            \forall i=1,\ldots,n, \supp C_i\cap M =\varnothing
+            }}w(C_1)\ldots w(C_n)
+    \end{align*}
+    where the support of a cluster $C=(X_1,\ldots,X_p)$ is $\supp C:=\supp X_1\cap\ldots\cap\supp X_p$
+    If $M=\varnothing$, we get $Z_\lambda$, which explains the notation.
+    
+    We can then write :
+    \begin{align*}
+        \langle A\rangle &= \frac 1 {Z_\Lambda}\sum_{C_A}w_A(C_A)\left[\sum_{k\geq 0} \frac 1{k!}\sum_{\substack{C_1,\ldots,C_k\disj\\\forall i=1,\ldots,k, \supp C_i\cap \supp C_A=\varnothing}}w(C_1)\ldots w(C_k)\right]\\
+        &=\sum_{C_A}w_A(C_A)\frac{Z_\Lambda(\supp C_A)}{Z_\Lambda}
+    \end{align*}
+    and with the same decomposition :
+    \begin{align*}
+        \langle AB\rangle=& \sum_{C_{A},C_B}w_A(C_A)w_B(C_B)\frac{Z_\Lambda(\supp C_A \cup \supp C_B)}{Z_\Lambda}+\sum_{C_{AB}}w_{AB}(C_{AB})\frac{Z_\Lambda(\supp C_{AB})}{Z_\Lambda}.
+    \end{align*}
+\end{proof}
  
  
  
