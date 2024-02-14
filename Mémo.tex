@@ -1,9 +1,10 @@
-\documentclass[french]{article}
+\documentclass{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[a4paper]{geometry}
 \usepackage[]{amsmath}
+\usepackage{xcolor}
 \usepackage[]{amsfonts}
 \usepackage{bbm}
 \usepackage[]{mathtools}
@@ -30,6 +31,7 @@ sorting=ynt
 \DeclareMathOperator{\disj}{disjoint}
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\Conn}{Conn}
 \DeclareMathOperator{\supp}{supp}
 \newcommand\formeq{\stackrel{\mathclap{\normalfont\mbox{F}}}{=}}
 \begin{document}
@@ -87,14 +89,14 @@ S(\rho):=-\Tr[\rho\log\rho]
      $$|\langle AB\rangle - \langle A\rangle\langle B\rangle|\leq k(A,B)e^{-\mu(\supp A,\supp B)}$$
      where $$k(A,B):=\lVert A\rVert\lVert B\rVert(a\abs{\supp A}+a\abs{\supp B} + 3a^2\abs{\supp A}\abs{\supp B})$$ and 
      $$
-     \mu(X,Y):= \min_{n\geq 1} \min_{\substack{X=X_0,X_1,\ldots,X_n=Y \\ \forall i=0,\ldots,n-1, X_i\cap X_{i+1}\neq \varnothing}} b(X_1)+\ldots+b(X_{n-1}).
+     \mu(X,Y):= \min_{\substack{X=X_0,X_1,\ldots,X_n=Y \\ \forall i=0,\ldots,n-1, X_i\cap X_{i+1}\neq \varnothing}}
      $$
  \end{thm}
     We will need a few results to prove this theorem.
      We begin with the {\it cluster expansion} of the partition function :
      \begin{align*}
          \tr e^{\beta H_\Lambda}=&\sum_{n>0}\frac{1}{n!}(\beta H_\Lambda)^n\\
-         =&\sum_{n>0}\frac{\beta^n}{n!}\sum_{(X_1,\ldots, X_n)\subset \Lambda^n}\tr\Phi_{X_1}\ldots\Phi_{X_n}
+         =&\sum_{n>0}\frac{\beta^n}{n!}\sum_{X_1,\ldots, X_n\subset \Lambda}\tr\Phi_{X_1}\ldots\Phi_{X_n}
      \end{align*}
      Observe that if $X$ and $Y$ are disjoint finite subsets of $\mathbb Z^d$, $\tr \Phi_X\Phi_Y=\tr \Phi_X \tr\Phi_Y$ and $\Phi_X$ and $\Phi_Y$ commute.
     This motivates the decomposition of the product into clusters.
@@ -151,11 +153,12 @@ S(\rho):=-\Tr[\rho\log\rho]
     \end{align*}
     and with the same decomposition :
     \begin{align*}
-        \langle AB\rangle=& \sum_{C_{A},C_B}w_A(C_A)w_B(C_B)\frac{Z_\Lambda(\supp C_A \cup \supp C_B)}{Z_\Lambda}+\sum_{C_{AB}}w_{AB}(C_{AB})\frac{Z_\Lambda(\supp C_{AB})}{Z_\Lambda}.
+        \langle AB\rangle=& \sum_{\substack{C_{A},C_B\\\disj}}w_A(C_A)w_B(C_B)\frac{Z_\Lambda(\supp C_A \cup \supp C_B)}{Z_\Lambda}+\sum_{C_{AB}}w_{AB}(C_{AB})\frac{Z_\Lambda(\supp C_{AB})}{Z_\Lambda}.
     \end{align*}
     We can now use the following lemma :
     \begin{lem}
-        Under the same hypotheses as in \cref{thm:exp_decay_of_correlations},
+        \label{lem:Z/Z}
+        Under the same hypotheses as in \cref{thm:exp_decay_of_correlations}, if $C_A$ and $C_B$ are disjoint,
         \begin{align*}
             \frac{Z_\Lambda(\supp C_A\cup \supp C_B)}{Z_\Lambda}&=\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B)+\hat Z_\Lambda(C_A,C_B)
         \end{align*}
@@ -164,20 +167,114 @@ S(\rho):=-\Tr[\rho\log\rho]
             \hat Z_\Lambda(C_A,C_B)&:=\sum_{k\geq 0}(k+1)(k+2)\sum_{C_1,\ldots,C_k}\varphi(C_A,C_B,C_1,\ldots,C_k)w(C_1)\ldots w(C_k),\\
             \varphi(C_1,\ldots,C_n)&:=\begin{cases}
                 1&\textnormal{if $n=1$,}\\
-                \sum_{g\in \textnormal{Conn}(n)}\prod_{\{i,j\}\in g}(-\mathbbm 1_{\supp C_i\cap \supp C_j\neq \varnothing})&\textnormal{else.}
+                \sum_{g\in \textnormal{Conn}(n)}\prod_{\{i,j\}\in g}(-\mathbbm 1_{\supp C_i\cap \supp C_j\neq \varnothing})&\textnormal{if $n\geq 2$.}
             \end{cases}
         \end{align*}
         $\textnormal{Conn}(n)$ denotes here the set of connected graphs over the vertices $\{1,\ldots,n\}$ and the product is taken over the edges of $g$.
     \end{lem}
-    With the convention that $\Phi_\varnothing=\mathbbm0$ and $\tr \Phi_\varnothing=0$, this also gives us $$
-        \frac{Z_\Lambda(\supp C_A)}{Z_\Lambda}=\frac{Z_\Lambda(\supp C_A\cup \supp (\varnothing))}{Z_\Lambda}=\hat Z_\Lambda(C_A)\times\mathbbm 1+ \mathbb 0,
+        We will give the proof at the end because it utilizes convergences proved in later results.
+    With the convention that $\Phi_\varnothing=\mathbb 0$ and $\tr \Phi_\varnothing=0$, this also gives us $$
+        \frac{Z_\Lambda(\supp C_A)}{Z_\Lambda}=\frac{Z_\Lambda(\supp C_A\cup \supp (\varnothing))}{Z_\Lambda}=\hat Z_\Lambda(C_A)\times\mathbbm 1+ \mathbb 0=\hat Z_\Lambda(C_A),
     $$
-    because $\varphi((\varnothing))=1$ and $\varphi((\varnothing),C_1,\ldots,C_k)=0$.
-    \begin{proof}
-        
-    \end{proof}
+    because $\varphi((\varnothing))=1$ and $\varphi((\varnothing),C_1,\ldots,C_k)=0$ for $k\geq 1$.
+
+    
+ Using this lemma, we get \begin{align*}
+ \langle A\rangle\langle B \rangle =& \left(\sum_{C_A}w_A(C_A)\hat Z_\Lambda(C_A)\right)\left(\sum_{C_B}w_B(C_B)\hat Z_\Lambda(C_B)\right)\\
+ =&\sum_{C_A,C_B}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B) 
+ \end{align*}
+ and 
+ \begin{align*}
+     \langle AB\rangle =\sum_{\substack{C_A,C_B\\\disj}}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B)+\sum_{\substack{C_A,C_B\\\disj}}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A,C_B)&
+     \\
+     +\sum_{C_{AB}}w_{AB}(C_{AB})\hat Z_{\Lambda}(C_{AB}).&
+ \end{align*}
+ 
+ Because $\sum_{\substack{C_A,C_B\\\disj}}(\ldots)-\sum_{C_A,C_B}(\ldots)=-\sum_{\substack{C_A,C_B\\\supp C_A\cap \supp C_B\neq \varnothing}}(\ldots)$,
+ we get the following expression for the covariance:
+ \begin{align*}
+     \langle AB\rangle - \langle A\rangle \langle B\rangle =\sum_{\substack{C_A,C_B\\\disj}}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A,C_B)
+     +\sum_{C_{AB}}w_{AB}(C_{AB})\hat Z_{\Lambda}(C_{AB})\\
+     -\sum_{\substack{C_A,C_B\\\supp C_A\cap \supp C_B\neq \varnothing}}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B).
+\end{align*}
+
+We will give the proof of this and other intermediary results at the end of this section.
+The main result we will use is the following : 
+\begin{thm}
+    Assume that for every cluster $C$,$$
+        \sum_{\substack{C’\in \mathcal C_\Lambda\\\supp C\cap \supp C’\neq\varnothing}}\abs{w(C’)}e^{a\abs{\supp C’}+b(C’)}\leq a\abs{\supp C},
+    $$
+    where if $C=(X_1,\ldots,X_n),b(C)=b(X_1)+\ldots+b(X_n)$.
+    Then for every $m\geq 1$, $A_1,\ldots ,A_m$ clusters,
+    \begin{multline*}
+        \sum_{k\geq 0}\frac{(k+m)!}{k!}\sum_{C_1,\ldots,C_k}\abs{\varphi(A_1,\ldots,A_m,C_1,\ldots,C_k)}\abs{w(C_1)}\ldots \abs{w(C_k)}e^{b(C_1)+\ldots+b(C_k)}\\
+            \leq e^{\frac{2^m-1}{m}a(\abs{\supp C_1}+\ldots+\abs{\supp C_k})}\times 2^{\#\{1\leq i<j\leq m\mid A_i\cap A_j\neq\varnothing\}}.
+        \end{multline*}
+\end{thm}
+ Let us prove the hypothesis.
+ For $C=(X_1,\ldots,X_n)$ a cluster,
+ \begin{align*}
+|w(C)|=&\frac{\beta^{n}}{n!}\abs{\tr\Phi_{X_1}\ldots\Phi_{X_n}}\\
+\leq& \frac{\beta^{n}}{n!}\norm{\Phi_{X_1}\ldots\Phi_{X_n}}\\
+\leq &\frac{\beta^{n}}{n!}\prod_{i=1}^n{\norm{\Phi_{X_i}}}.
+ \end{align*}
  
  
  
+ 
+ \begin{proof}[Proof of \cref{lem:Z/Z}]
+     In the following, $\mathcal G(V)$ denotes the set of graphs with vertices $V$ and $\Conn(V)$ the set of connected graphs with vertices $V$.
+     We also allow ourselves to write $C$ for $\supp C$ when taking intersections to lighten the notations -- by $C_i\cap C_j \neq \varnothing$ we never mean that $C_i$ and $C_j$ have an element in common, but that their supports intersect.
+     Let us now rewrite $Z_\Lambda(\supp C_A\cup \supp C_B)$ to find the expression we want:
+     \begin{equation}
+         \label{eqn:ZCACB_with_product}
+         Z_\Lambda(\supp C_A\cup \supp C_B)=\sum_{n\geq 0}\frac 1{n!}\sum_{C_1,\ldots,C_n}\left(\prod_{\substack{i,j\in \{1\ldots,n,A,B\}\\
+                 i\neq j}}\mathbb 1_{C_i\cap C_j=\varnothing}\right)w(C_1)\ldots w(C_n)
+     \end{equation}
+     Note that we included the factor $\mathbb 1_{C_A\cap C_B=\varnothing}$ in the product, which we can since it is just equal to $1$.
+     We then rewrite the product to get a sum over graphs:
+     \begin{align*}
+         \prod_{\substack{i,j\in \{1\ldots,n,A,B\}\\
+                 i\neq j}}\mathbb 1_{C_i\cap C_j=\varnothing}=&\prod_{\substack{i,j\in \{1\ldots,n,A,B\}\\
+                 i\neq j}}(1-\mathbb 1_{C_i\cap C_j\neq\varnothing})\\
+         =&\sum_{g \in \mathcal G(\{1,\ldots,n,A,B\})}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq \varnothing}).
+     \end{align*}
+     We can split the sum between the graphs where $A$ and $B$ are in the same connected component and those where they aren’t (in the graph $g$, this does not say anything about intersections of support of clusters).
+     In the first case, we extract their connected component as a connected graph over $A$,$B$ and some subset $V$ of the vertices:
+     \begin{align*}
+         \sum_{\substack{g \in\mathcal G (\{1,\ldots,n,A,B\})\\A\leftrightarrow B}}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})=\sum_{V\subset \{1,\ldots,n\}}\sum_{g_{A,B}\in\Conn(\{A,B\}\cup V)}\left[ \left(\prod_{\{i,j\}\in g_{AB}}(-\mathbb 1_{C_i\cap C_j\neq \varnothing})\right)\right. &\\
+         \left. \sum_{g\in \mathcal G(\{1,\ldots,n\}\setminus V)}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})\right]&\\
+         =\sum_{V=\{v_1,\ldots,v_l\}\subset\{1,\ldots,n\}}\Biggl(\varphi(C_A,C_B,C_{v_1},\ldots,C_{v_l})
+         \prod_{\substack{i,j\in \{1,\ldots,n\}\setminus V\\i\neq j}}\mathbbm 1_{C_i\cap C_j=\varnothing}\Biggr)&
+     \end{align*}
+     and in the second, we do the same but by extracting the connected component of $A$, with vertices $\{A\}\cup V$, and the connected component of $B$, with vertices $\{B\}\cup W$:   
+     \begin{align*}
+         \sum_{\substack{g \in\mathcal G (\{1,\ldots,n,A,B\})\\A\nleftrightarrow B}}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})=\sum_{\substack{V=\{v_1,\ldots,v_l\}\subset \{1,\ldots,n\}\\
+                 W=\{w_1,\ldots,w_m\}\subset\{1,\ldots,n\}\\
+                 V\cap W=\varnothing}}\Biggl(\varphi(C_A,C_{v_1},\ldots,C_{v_l})\varphi(C_B,C_{w_1},\ldots,C_{w_m})\\
+         \prod_{\substack{i,j\in \{1\ldots,n\}\setminus (V \cup W)\\i\neq j}}\mathbbm 1_{C_i\cap C_j=\varnothing}\Biggr).
+     \end{align*}
+     Now we "just" plug these expressions in \cref{eqn:ZCACB_with_product} and sum over the cardinals of $V$ and $W$:        \begin{align*}
+         Z_\Lambda(\supp C_A\cup \supp C_B)=\sum_{n\geq 0}\frac 1{n!}\Biggl[\sum_{l\leq n} \frac{n!}{l!(n-l)!}\left(\sum_{C_1,\ldots,C_l}(l+2)!\varphi(C_A,C_B,C_1,\ldots,C_l)w(C_1)\ldots w(C_l)\right)
+         \\
+         \times\sum_{\substack{C_{l+1},\ldots C_n\\\disj}}w(C_{l+1},\ldots,C_n)
+         \\
+         +\sum_{\substack{l,m>0\\l+m\leq n}}\frac{n!}{m!l!(n-m-l)!}\left(\sum_{C_1,\ldots,C_l}(l+1)!\varphi(C_A,C_1,\ldots,C_l)w(C_1)\ldots w(C_l)\right)
+         \\
+         \times
+         \left(\sum_{C_{l+1},\ldots,C_{l+m}}(m+1)!\varphi(C_B,C_{l+1},\ldots,C_{l+m})w(C_{l+1}\ldots w(C_{l+m})\right)
+         \\
+         \times
+         \sum_{\substack{C_{l+m+1},\ldots,C_{n}\\\disj}}w(C_{l+m+1})\ldots w(C_n)\Biggr].
+     \end{align*}
+     The first two lines correspond to the sum over graphs with $A$ and $B$ connected and the following three to $A$ and $B$ disconnected. 
+     The combinatorial terms outside of the parentheses are multinomial coefficients that account for the number of ways to pick $V$ and $W$. 
+     I’m not sure what the factorials inside the parentheses are, but they definitely should be there.
+     By distributing the factorials correctly and swapping the sums we get :
+     $$
+     \frac{Z_\Lambda(\supp C_A\cup \supp C_B)}{Z_\Lambda}\formeq\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B)+\hat Z_\Lambda(C_A,C_B).
+     $$
+     We will show that the sums converge absolutely and uniformly in $n$ {\color{red}later}, which will conclude the proof.
+ \end{proof} 
  \printbibliography
 \end{document}
