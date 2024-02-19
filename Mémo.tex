@@ -9,9 +9,9 @@
 \usepackage{bbm}
 \usepackage[]{mathtools}
 \usepackage{hyperref}
+\usepackage{amsthm}
 \usepackage[]{cleveref}
 \usepackage[]{amssymb}
-\usepackage{amsthm}
 \usepackage[bb=boondox]{mathalfa}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
@@ -21,10 +21,10 @@ style=alphabetic,
 sorting=ynt
 ]{biblatex}
 \addbibresource{bib.bib}
-\newtheorem{thm}{Theorem}
+\newtheorem{thm}{Theorem}[section]
 \crefname{thm}{theorem}{theorems}
 \Crefname{thm}{Theorem}{Theorems}
-\newtheorem{lem}{Lemma}
+\newtheorem{lem}[thm]{Lemma}
 \crefname{lem}{lemma}{lemmas}
 \Crefname{lem}{Lemma}{Lemmas}
 \DeclareMathOperator{\Tr}{Tr}
@@ -35,35 +35,35 @@ sorting=ynt
 \DeclareMathOperator{\supp}{supp}
 \newcommand\formeq{\stackrel{\mathclap{\normalfont\mbox{F}}}{=}}
 \begin{document}
-\subsection{Intro}
-Q.1: $\rho_\beta$ minimizes free energy.
-
-\begin{eqnarray*}
-   \rho_\beta:= \frac{e^{-\beta H}}{\Tr[e^{-\beta H}]}\\
-F_\beta(\rho):=\Tr[\rho H]-\beta^{-1}S(\rho)\\
-S(\rho):=-\Tr[\rho\log\rho]
-\end{eqnarray*}
- We use the relative entropy $D(\rho\mid \sigma):=\Tr[\rho(\log \rho - \log  \sigma)]$ : it is nonnegative and zero iff $\rho=\sigma$.
- Then :
- $$
- D(\rho\mid\rho_\beta)=\Tr[\rho(\log\rho-\log\rho_\beta)]=-S(\rho)+\beta\Tr[\rho H]+\log(Z).
- $$
- where $Z=\Tr[e^{-\beta H}]$.
- 
- Q.2: Among states with same energy ($\Tr[H\rho]$), $\rho_\beta$ maximizes entropy.
- We differentiate the entropy on the submanifold of quantum states with energy $E$.
- When $B$ is invertible, we have : $$
- dS(k)\vert_{\rho}=-\Tr[k\log \rho]-\Tr[k\rho\rho^{-1}]
- $$
- Because on the tangent space, $\Tr[k]=0$ and $\Tr[kH]=0$, we get that $$
- \Hess S(k)\vert_{\rho}=-\Tr[k^2\rho^{-1}]<0
- $$
- and $$
- dS(k)\vert_{\rho_\beta}=\beta\Tr[kH]=0.
- $$
- By concavity, $\rho_\beta$ is thus the only minimizer of $S$ with the same energy.
- 
- \subsection{Proof of the bound given by \cite{froehlichPropertiesCorrelationsQuantum2015}}
+%\section{Intro}
+%Q.1: $\rho_\beta$ minimizes free energy.
+%
+%\begin{eqnarray*}
+%   \rho_\beta:= \frac{e^{-\beta H}}{\Tr[e^{-\beta H}]}\\
+%F_\beta(\rho):=\Tr[\rho H]-\beta^{-1}S(\rho)\\
+%S(\rho):=-\Tr[\rho\log\rho]
+%\end{eqnarray*}
+% We use the relative entropy $D(\rho\mid \sigma):=\Tr[\rho(\log \rho - \log  \sigma)]$ : it is nonnegative and zero iff $\rho=\sigma$.
+% Then :
+% $$
+% D(\rho\mid\rho_\beta)=\Tr[\rho(\log\rho-\log\rho_\beta)]=-S(\rho)+\beta\Tr[\rho H]+\log(Z).
+% $$
+% where $Z=\Tr[e^{-\beta H}]$.
+% 
+% Q.2: Among states with same energy ($\Tr[H\rho]$), $\rho_\beta$ maximizes entropy.
+% We differentiate the entropy on the submanifold of quantum states with energy $E$.
+% When $B$ is invertible, we have : $$
+% dS(k)\vert_{\rho}=-\Tr[k\log \rho]-\Tr[k\rho\rho^{-1}]
+% $$
+% Because on the tangent space, $\Tr[k]=0$ and $\Tr[kH]=0$, we get that $$
+% \Hess S(k)\vert_{\rho}=-\Tr[k^2\rho^{-1}]<0
+% $$
+% and $$
+% dS(k)\vert_{\rho_\beta}=\beta\Tr[kH]=0.
+% $$
+% By concavity, $\rho_\beta$ is thus the only minimizer of $S$ with the same energy.
+% 
+ \section{Proof of the bound given by \cite{froehlichPropertiesCorrelationsQuantum2015}}
  
  This whole section is based on two articles, \cite{froehlichPropertiesCorrelationsQuantum2015} and \cite{ueltschiClusterExpansionsCorrelation2005}.
  
@@ -84,12 +84,15 @@ S(\rho):=-\Tr[\rho\log\rho]
      \label{thm:exp_decay_of_correlations}
      Let $b$ be a nonnegative function of the finite subsets of $\mathbb Z^d$.
      If we assume that 
-     $$\beta\sup_{x\in\mathbb Z^d}\sum_{X\ni x}\lVert\Phi_X\rVert e^{\frac{3}{2}a|X|+b(X)}$$ 
+     \begin{equation}
+         \label{eq:hypothesis}
+         \beta\sup_{x\in\mathbb Z^d}\sum_{X\ni x}\lVert\Phi_X\rVert e^{\frac{5}{2}a|X|+b(X)}<a
+         \end{equation}
      for some $a>0$, then for any two bounded operators $A,B$ on $\mathcal H_\Lambda$
      $$|\langle AB\rangle - \langle A\rangle\langle B\rangle|\leq k(A,B)e^{-\mu(\supp A,\supp B)}$$
      where $$k(A,B):=\lVert A\rVert\lVert B\rVert(a\abs{\supp A}+a\abs{\supp B} + 3a^2\abs{\supp A}\abs{\supp B})$$ and 
      $$
-     \mu(X,Y):= \min_{\substack{X=X_0,X_1,\ldots,X_n=Y \\ \forall i=0,\ldots,n-1, X_i\cap X_{i+1}\neq \varnothing}}
+     \mu(X,Y):= \min_{\substack{X=X_0,X_1,\ldots,X_n=Y \\ \forall i=0,\ldots,n-1, X_i\cap X_{i+1}\neq \varnothing}}.
      $$
  \end{thm}
     We will need a few results to prove this theorem.
@@ -101,7 +104,7 @@ S(\rho):=-\Tr[\rho\log\rho]
      Observe that if $X$ and $Y$ are disjoint finite subsets of $\mathbb Z^d$, $\tr \Phi_X\Phi_Y=\tr \Phi_X \tr\Phi_Y$ and $\Phi_X$ and $\Phi_Y$ commute.
     This motivates the decomposition of the product into clusters.
     We see the finite subsets of $\mathbb Z^d$ as the vertices of a graph with an edge between $X$ and $Y$ if and only if $X\cap Y\neq \varnothing$; if it has a subgraph with vertices $X_1,\ldots,X_n$, we call $(X_1,\ldots,X_n)$ a {\it cluster}.
-    We write $\mathcal C_\Lambda$ for the set of clusters over $\Lambda$.
+    We write $\mathcal C_\Lambda$ for the set of nonempty clusters over $\Lambda$.
     By summing over clusters, we get 
     \begin{align*}
         \tr e^{\beta H_\Lambda}=&\sum_{n\geq0}\frac {\beta^n} {n!} \sum_{k\geq 0}\frac{1}{k!}\sum_{\substack{C_1,\ldots,C_k\in\mathcal C_\Lambda \disj\\\abs{C_1}+\ldots+\abs{C_k}=n}}\binom{n}{\abs{C_1},\ldots,\abs{C_k}}\prod_{i=1,\ldots,k}\tr\prod_{X\in C_i}\Phi_X.
@@ -158,7 +161,7 @@ S(\rho):=-\Tr[\rho\log\rho]
     We can now use the following lemma :
     \begin{lem}
         \label{lem:Z/Z}
-        Under the same hypotheses as in \cref{thm:exp_decay_of_correlations}, if $C_A$ and $C_B$ are disjoint,
+        If \cref{eq:hypothesis} holds and $C_A$ and $C_B$ are disjoint clusters,
         \begin{align*}
             \frac{Z_\Lambda(\supp C_A\cup \supp C_B)}{Z_\Lambda}&=\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B)+\hat Z_\Lambda(C_A,C_B)
         \end{align*}
@@ -192,15 +195,17 @@ S(\rho):=-\Tr[\rho\log\rho]
  
  Because $\sum_{\substack{C_A,C_B\\\disj}}(\ldots)-\sum_{C_A,C_B}(\ldots)=-\sum_{\substack{C_A,C_B\\\supp C_A\cap \supp C_B\neq \varnothing}}(\ldots)$,
  we get the following expression for the covariance:
- \begin{align*}
+ \begin{align}
+     \label{eq: covariance}
      \langle AB\rangle - \langle A\rangle \langle B\rangle =\sum_{\substack{C_A,C_B\\\disj}}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A,C_B)
      +\sum_{C_{AB}}w_{AB}(C_{AB})\hat Z_{\Lambda}(C_{AB})\\
      -\sum_{\substack{C_A,C_B\\\supp C_A\cap \supp C_B\neq \varnothing}}w_A(C_A)w_B(C_B)\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B).
-\end{align*}
+\end{align}
 
 We will give the proof of this and other intermediary results at the end of this section.
 The main result we will use is the following : 
 \begin{thm}
+    \label{thm:corellation_estimates}
     Assume that for every cluster $C$,$$
         \sum_{\substack{C’\in \mathcal C_\Lambda\\\supp C\cap \supp C’\neq\varnothing}}\abs{w(C’)}e^{a\abs{\supp C’}+b(C’)}\leq a\abs{\supp C},
     $$
@@ -208,22 +213,144 @@ The main result we will use is the following :
     Then for every $m\geq 1$, $A_1,\ldots ,A_m$ clusters,
     \begin{multline*}
         \sum_{k\geq 0}\frac{(k+m)!}{k!}\sum_{C_1,\ldots,C_k}\abs{\varphi(A_1,\ldots,A_m,C_1,\ldots,C_k)}\abs{w(C_1)}\ldots \abs{w(C_k)}e^{b(C_1)+\ldots+b(C_k)}\\
-            \leq e^{\frac{2^m-1}{m}a(\abs{\supp C_1}+\ldots+\abs{\supp C_k})}\times 2^{\#\{1\leq i<j\leq m\mid A_i\cap A_j\neq\varnothing\}}.
+            \leq e^{\frac{2^m-1}{m}a(\abs{\supp A_1}+\ldots+\abs{\supp A_k})}\times 2^{\#\{1\leq i<j\leq m\mid A_i\cap A_j\neq\varnothing\}}.
         \end{multline*}
 \end{thm}
- Let us prove the hypothesis.
+Observe that the left hand side is $\hat Z$ with additional factors of the form $e^{b(C_i)}$ when $m=1,2$. 
+In fact, we will only use this theorem for these two values of $m$.
+
+ Now, let us prove a stronger version of the hypothesis :
+ \begin{equation}
+     \label{eq:sum_over_C_w_leq_a_suppC}
+         \sum_{\substack{C’\in \mathcal C_\Lambda\\\supp C\cap \supp C’\neq\varnothing}}\abs{w(C’)}e^{\frac 3 2 a\abs{\supp C’}+b(C’)}\leq a\abs{\supp C},
+ \end{equation}
  For $C=(X_1,\ldots,X_n)$ a cluster,
  \begin{align*}
 |w(C)|=&\frac{\beta^{n}}{n!}\abs{\tr\Phi_{X_1}\ldots\Phi_{X_n}}\\
 \leq& \frac{\beta^{n}}{n!}\norm{\Phi_{X_1}\ldots\Phi_{X_n}}\\
 \leq &\frac{\beta^{n}}{n!}\prod_{i=1}^n{\norm{\Phi_{X_i}}}.
  \end{align*}
- 
- 
- 
- 
+ Let us write $R_0=0$ and for $m\geq 1$, with $n(C)$ the number of sets in a cluster $C$ :\begin{align*}
+ R_m:=&\sup_{x\in \mathbb Z^d}\sum_{\substack{C\in\mathcal C_\Lambda,\supp C\ni x\\n(C)\leq m}}\frac{\beta^{n(C)}}{n(C)!}e^{a\frac 3 2 \abs {\supp C} + b(C)}\prod_{i=1}^{n(C)}\norm{\Phi_{X_i}}\\
+ \leq& \sup_{x\in \mathbb Z^d}\sum_{\substack{C\in\mathcal C_\Lambda,\supp C\ni x\\n(C)\leq m}}\frac{\beta^{n(C)}}{n(C)!}\prod_{i=1}^{n(C)}\norm{\Phi_{X_i}}e^{a\frac 3 2 \abs {X_i} + b(X_i)}
+\end{align*}
+ We will show by induction that $R_m \leq a$ for all $m$, then by summing over $x\in \supp C$ this will prove the inequality.
+ It is true for $R_0$; we fix $m\geq 1$
+ and assume that $R_k<a$ holds for $k<m$.
+We also choose a total order $\prec$ on the subsets of $\Lambda$ with the property that if $x\notin X$, $x\in X’$, then $X\prec X’$.
+
+ We write for $X\subset \Lambda$ $f(X):=\beta\norm{\Phi_X}e^{\frac 3 2 a\abs{X}+b(X)}$
+ and we have :
+ \begin{align*}
+     \frac 1 {n!} \sum_{\substack{C\in\mathcal C_\Lambda,n(C)=n\\x\in\supp C}}\prod_{i=1}^{n}f(X_i)\leq& \sum_{\substack{X_1\prec\ldots\prec X_n\\X_1\ni x,(X_1,\ldots,X_n)\in\mathcal C_\Lambda}}\prod_{i=1}^{n}f(X_i)
+     \\
+     =&\sum_{X_1\ni x}f(X_1)\sum_{k\geq 0}\frac 1{k!}\sum_{\substack{C_1,\ldots,C_k,\disj\\n(C_1)+\ldots+n(C_k)=n-1
+             \\\forall i, X_1\prec C_i,\supp C_i\cap X_1\neq \varnothing
+         }}\prod_{i=1}^k\frac {\prod_{X\in C_i}f(X)}{n(C_i)!}.\end{align*}
+     By definition of the order $\prec$, $x$ has to be at least in $X_1$.
+     From this follows that
+     \begin{align*}
+     R_m \leq& \sum_{X_1\ni x}f(X_1)\sum_{k\geq 0}\frac 1{k!}\sum_{\substack{C_1,\ldots,C_k
+             \\\forall i, \abs{\supp C_i}\leq m-1\\\forall i,\supp C_i\cap X_1\neq \varnothing
+     }}\prod_{i=1}^k\frac {\prod_{X\in C_i}f(X)}{n(C_i)!}\\
+ \leq& \sum_{X_1\ni x}f(X_1)\prod_{y\in X}\left(1+
+  \sum_{\substack{C\in \mathcal C_\Lambda,y\in\supp C\\n(C)\leq m-1}}\frac{1}{n(C)!}\prod_{X\in C_i}{f(X)}
+ \right)\\
+ \leq &\sum_{X_1\ni x}f(X_1)\prod_{y\in X}\left(1+R_{m-1}\right)\\
+ \leq & \beta\sum_{X\ni x}\norm{\Phi_{X}}e^{\frac 3 2 a\abs{X}+b(X)}(1+a)^{\abs{X}}\\
+ \leq &\beta\sum_{X\ni x}\norm{\Phi_{X}}e^{\frac 5 2 a\abs{X}+b(X)}.
+\end{align*}
+Where in the last line we use the fact that $\ln(1+a)\leq a$.
+\Cref{eq:sum_over_C_w_leq_a_suppC} then readily follows from \cref{eq:hypothesis}.
+
+We can now use \cref{thm:corellation_estimates}.
+An important thing to note is that for $\varphi(C_1,\ldots,C_n)$ to be nonzero, there has to be at least one connected graph on $\{1,\ldots,n\}$ every edge $\{i,j\}$ of which verifies $\mathbb 1_{\supp C_i\cap \supp C_j\neq \varnothing}$.
+
+
+
+%For $m=2$ and $C_A$, $C_B$ disjoint, if $\varphi(C_A,C_B,C_1,\ldots,C_n)$ is nonzero, this means that $C_1,\ldots, C_n$ links $C_A$ and $C_B$ with a chain of overlapping clusters, and thus $e^{b(C_1)+\ldots+b(C_n)}\geq e^{\mu(\supp A,\supp B))}$.
+%We obtain 
+%\begin{equation}
+%    \label{eq:Z(C_AB)}
+%e^{\mu(\supp A,\supp B)}\abs{\hat Z_\Lambda(C_A,C_B)}\leq e^{\frac 3 2 a\abs{\supp C_A}+\frac 3 2 a \abs{\supp C_B}}.
+%\end{equation}
+%
+%On the other hand, for $m=1$ {\color{red} je sais pas} 
+%\begin{equation}
+%    e^{b(C_A)}\abs{\hat Z_\Lambda(C_A)}\leq e^{a\abs{\supp C_A}+b(\supp A)}.
+%    \label{eq:Z(C_A)}
+%\end{equation}
+%
+%We now have all the components required to bound every term of \cref{eq: covariance}.
+%
+%Recall that \begin{align*}
+%    w_{A}((\supp A,X_1,\ldots,X_n))=&\frac{\beta^n}{n!}\tr A\Phi_{X_1}\ldots\Phi_{X_n}\\
+%    \leq&\norm{A}w((X_1,\ldots,X_n)),
+%    \end{align*}
+%and thus using \cref{eq:Z(C_A)}
+%\begin{align*}
+%    \abs{\sum_{\substack{C_{AB}}}w_{AB}(C_{AB})\hat Z_\Lambda(C_{AB})}\leq&\norm{A}\norm{B}\sum_{\substack{}}w
+%\end{align*}
+\subsection{Proofs}
+In the following, when $V$ is a set, $\mathcal G(V)$ denotes the set of graphs with vertices $V$ and $\Conn(V)$ the set of connected graphs with vertices $V$.
+Similarly to $\Conn$, $\mathcal{G}(n):=\mathcal G(\{1,\ldots,n\})$.
+\begin{proof}[Proof of \cref{thm:corellation_estimates}]
+    We first give an upper bound for $\abs{\varphi(A_1,\ldots,A_m,C_1,\ldots,C_k)}$.
+%    For convenience’s sake, we rename $A_{m+i}:=C_i$ for $i=1,\ldots,k$ so that the sum in the expression of $\varphi$ is taken over $\Conn(m+k)$.
+    
+    A connected graph $G$ on $\{1,\ldots,m\}\sqcup \{1,\ldots,k\}$ vertices can be decomposed as :\begin{itemize}
+        \item a (not necessarily connected) graph $G’$ on $\{1,\ldots,m\}$,
+        \item the $p$ connected components of $G\setminus G’$, $G_1,\ldots, G_p$,
+        \item a partition $\{W_1,\ldots,W_p\}$ of $\{1,\ldots,k\}$ such that $G_i$ has vertices $W_i$ for $i=1,\ldots,p$,
+        \item non-empty subsets $V_1,\ldots,V_p$ of $\{1,\ldots,m\}$,
+        \item for each $i=1,\ldots,p$, and each vertex $v$ in $V_i$, a nonempty set of edges between $v$ and $W_i$.
+        \end{itemize}
+        This correspondence is not bijective : although every connected graph has such a representation, taking every possibilities for these quantities doesn’t always produce a connected graph.
+        This is not a problem because we are trying to obtain an upper bound, and we can thus drop the constraint:
+        \begin{multline*}
+            \abs{\varphi(A_1,\ldots,A_m,C_1,\ldots,C_k)}\leq\sum_{G’\in \mathcal G(m)}\prod_{\{i,j\}\in G’}\abs{-\mathbb 1_{A_i\cap A_j\neq\varnothing}}\\
+            \times \sum_{\{W_1,\ldots,W_p\}}\prod_{l=1}^p \left\{ \left| \sum_{G_l\in \Conn{W_l}}\prod_{\{i,j\}\in G_l}-\mathbb 1_{A_i\cap A_j\neq\varnothing}\right| 
+            \sum_{\substack{V_l\subset \{1,\ldots,m\}\\V_l\neq\varnothing}}\prod_{i\in V_l}\left|\sum_{\substack{J\subset W_l\\J\neq\varnothing}} \prod_{j\in J}-\mathbb 1_{A_i\cap C_j\neq\varnothing}\right|\right\}.
+        \end{multline*}
+        Then 
+        \begin{align*}
+            \prod_{i\in V_l}\left|\sum_{\substack{J\subset W_l\\J\neq\varnothing}} \prod_{j\in J}-\mathbb 1_{A_i\cap C_j\neq\varnothing}\right|=&\prod_{i\in V_l}\left|\left(\prod_{j\in W_l}(1-\mathbb 1_{A_i\cap C_j\neq\varnothing})\right)-1\right|\\
+            \leq& 1^{\abs{V_l}-1}\frac 1 {\abs{V_l}} \sum_{i\in V_l}\left|\left(\prod_{j\in W_l}(1-\mathbb 1_{A_i\cap C_j\neq\varnothing})\right)-1\right|.
+        \end{align*}
+        We get the inequality by seeing that each absolute value in the product is at most 1, using this bound for all of them except one that we bound by the mean of these absolute values.
+        Now if $W_l=w_1,\ldots,w_q$,
+        \begin{align*}
+            \left(\prod_{j=1}^q(1-\mathbb 1_{A_i\cap C_{w_j}\neq\varnothing})\right)-1=&\left[\left(\prod_{j=1}^{q-1}(1-\mathbb 1_{A_i\cap C_{w_j}\neq\varnothing})\right)-1\right](1-\mathbb 1_{A_i\cap C_{w_q}\neq\varnothing})-\mathbb 1_{A_i\cap C_{w_q}\neq\varnothing}
+        \end{align*}
+        and so $$\left|\left(\prod_{j\in W_l}(1-\mathbb 1_{A_i\cap C_j\neq\varnothing})\right)-1\right|\leq \sum_{j\in W_l}\abs{-\mathbb 1_{A_i\cap C_{j}\neq\varnothing}}.$$
+        This leaves us with $$
+         \sum_{\substack{V_l\subset \{1,\ldots,m\}\\V_l\neq\varnothing}}\prod_{i\in V_l}\left|\sum_{\substack{J\subset W_l\\J\neq\varnothing}} \prod_{j\in J}-\mathbb 1_{A_i\cap C_j\neq\varnothing}\right|\leq \frac {2^m-1} m \sum_{i=1}^m\sum_{j\in W_l}\mathbb 1_{A_i\cap C_{j}\neq\varnothing}.
+        $$
+        
+        We also have
+        $$
+        \sum_{G’\in \mathcal G(m)}\prod_{\{i,j\}\in G’}\abs{-\mathbb 1_{A_i\cap A_j\neq\varnothing}} = \prod_{1\leq i< j\leq m}(1+\mathbb 1_{A_i\cap A_j\neq\varnothing})=2^{\#\{1\leq i<j\leq m\mid A_i\cap A_j\neq\varnothing\}}
+        $$
+        and thus 
+        \begin{multline*}
+            \sum_{k\geq 0}\frac{(k+m)!}{k!}\sum_{C_1,\ldots,C_k}\abs{\varphi(A_1,\ldots,A_m,C_1,\ldots,C_k)}\abs{w(C_1)}\ldots \abs{w(C_k)}e^{b(C_1)+\ldots+b(C_k)}\\\leq
+            \sum_{k\geq 0}\sum_{p\geq 0}\frac 1 {p!} \sum_{\substack{n_1,\ldots,n_p\geq 1\\n_1+\ldots+n_p=k}}
+                \prod_{l=1}^p \\
+                \left\{\frac 1 {n_l!} \sum_{C_1,\ldots,C_{n_l}\in \mathcal C_\Lambda}
+                \abs{w(C_1)}\ldots \abs{w(C_k)}e^{b(C_1)+\ldots+b(C_k)}
+                \left| 
+                    \sum_{G_l\in \Conn{n_l}}\prod_{\{i,j\}\in G_l}-\mathbb 1_{C_i\cap C_j\neq\varnothing}
+                \right|\right.\\\left.
+                \times \frac {2^m-1} m \sum_{i=1}^m\sum_{j=1}^{n_l}\mathbb 1_{A_i\cap C_{j}\neq\varnothing}
+            \right\}
+            \times 2^{\#\{1\leq i<j\leq m\mid A_i\cap A_j\neq\varnothing\}}.
+        \end{multline*}
+        The only thing left to do is to show that the content of the brackets is bounded by $
+        \frac {2^m-1}{m}a(\abs{\supp A_1}+\ldots+\abs{\supp A_m})$; this will ensure that everything converges, and if we swap the sums we find the exponential we want.
+\end{proof}
+
+
  \begin{proof}[Proof of \cref{lem:Z/Z}]
-     In the following, $\mathcal G(V)$ denotes the set of graphs with vertices $V$ and $\Conn(V)$ the set of connected graphs with vertices $V$.
      We also allow ourselves to write $C$ for $\supp C$ when taking intersections to lighten the notations -- by $C_i\cap C_j \neq \varnothing$ we never mean that $C_i$ and $C_j$ have an element in common, but that their supports intersect.
      Let us now rewrite $Z_\Lambda(\supp C_A\cup \supp C_B)$ to find the expression we want:
      \begin{equation}
@@ -241,40 +368,39 @@ The main result we will use is the following :
      \end{align*}
      We can split the sum between the graphs where $A$ and $B$ are in the same connected component and those where they aren’t (in the graph $g$, this does not say anything about intersections of support of clusters).
      In the first case, we extract their connected component as a connected graph over $A$,$B$ and some subset $V$ of the vertices:
-     \begin{align*}
-         \sum_{\substack{g \in\mathcal G (\{1,\ldots,n,A,B\})\\A\leftrightarrow B}}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})=\sum_{V\subset \{1,\ldots,n\}}\sum_{g_{A,B}\in\Conn(\{A,B\}\cup V)}\left[ \left(\prod_{\{i,j\}\in g_{AB}}(-\mathbb 1_{C_i\cap C_j\neq \varnothing})\right)\right. &\\
-         \left. \sum_{g\in \mathcal G(\{1,\ldots,n\}\setminus V)}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})\right]&\\
-         =\sum_{V=\{v_1,\ldots,v_l\}\subset\{1,\ldots,n\}}\Biggl(\varphi(C_A,C_B,C_{v_1},\ldots,C_{v_l})
-         \prod_{\substack{i,j\in \{1,\ldots,n\}\setminus V\\i\neq j}}\mathbbm 1_{C_i\cap C_j=\varnothing}\Biggr)&
-     \end{align*}
+     \begin{multline*}
+         \sum_{\substack{g \in\mathcal G (\{1,\ldots,n,A,B\})\\A\leftrightarrow B}}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})=\sum_{V\subset \{1,\ldots,n\}}\sum_{g_{A,B}\in\Conn(\{A,B\}\cup V)}\\\left[ \left(\prod_{\{i,j\}\in g_{AB}}(-\mathbb 1_{C_i\cap C_j\neq \varnothing})\right)
+         \sum_{g\in \mathcal G(\{1,\ldots,n\}\setminus V)}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})\right]\\
+         =\sum_{V=\{v_1,\ldots,v_l\}\subset\{1,\ldots,n\}}\Biggl((l+2)!\varphi(C_A,C_B,C_{v_1},\ldots,C_{v_l})
+         \prod_{\substack{i,j\in \{1,\ldots,n\}\setminus V\\i\neq j}}\mathbbm 1_{C_i\cap C_j=\varnothing}\Biggr)
+     \end{multline*}
      and in the second, we do the same but by extracting the connected component of $A$, with vertices $\{A\}\cup V$, and the connected component of $B$, with vertices $\{B\}\cup W$:   
-     \begin{align*}
+     \begin{multline*}
          \sum_{\substack{g \in\mathcal G (\{1,\ldots,n,A,B\})\\A\nleftrightarrow B}}\prod_{\{i,j\}\in g}(-\mathbb 1_{C_i\cap C_j\neq\varnothing})=\sum_{\substack{V=\{v_1,\ldots,v_l\}\subset \{1,\ldots,n\}\\
                  W=\{w_1,\ldots,w_m\}\subset\{1,\ldots,n\}\\
-                 V\cap W=\varnothing}}\Biggl(\varphi(C_A,C_{v_1},\ldots,C_{v_l})\varphi(C_B,C_{w_1},\ldots,C_{w_m})\\
+                 V\cap W=\varnothing}}\\\Biggl(((l+1)!)^2\varphi(C_A,C_{v_1},\ldots,C_{v_l})\varphi(C_B,C_{w_1},\ldots,C_{w_m})
          \prod_{\substack{i,j\in \{1\ldots,n\}\setminus (V \cup W)\\i\neq j}}\mathbbm 1_{C_i\cap C_j=\varnothing}\Biggr).
-     \end{align*}
-     Now we "just" plug these expressions in \cref{eqn:ZCACB_with_product} and sum over the cardinals of $V$ and $W$:        \begin{align*}
-         Z_\Lambda(\supp C_A\cup \supp C_B)=\sum_{n\geq 0}\frac 1{n!}\Biggl[\sum_{l\leq n} \frac{n!}{l!(n-l)!}\left(\sum_{C_1,\ldots,C_l}(l+2)!\varphi(C_A,C_B,C_1,\ldots,C_l)w(C_1)\ldots w(C_l)\right)
-         \\
-         \times\sum_{\substack{C_{l+1},\ldots C_n\\\disj}}w(C_{l+1},\ldots,C_n)
-         \\
-         +\sum_{\substack{l,m>0\\l+m\leq n}}\frac{n!}{m!l!(n-m-l)!}\left(\sum_{C_1,\ldots,C_l}(l+1)!\varphi(C_A,C_1,\ldots,C_l)w(C_1)\ldots w(C_l)\right)
-         \\
+     \end{multline*}
+     Now we "just" plug these expressions in \cref{eqn:ZCACB_with_product} and sum over the cardinals of $V$ and $W$:        \begin{multline*}
+         Z_\Lambda(\supp C_A\cup \supp C_B)=\sum_{n\geq 0}\frac 1{n!}\left[\sum_{l\leq n} \frac{n!}{l!(n-l)!}
+         \vphantom{\sum_{\substack{C_{l+m+1},\ldots,C_{n}\\\disj}}w(C_{l+m+1})\ldots w(C_n)}\right.\\
+         \left\{\left(\sum_{C_1,\ldots,C_l}(l+2)!\varphi(C_A,C_B,C_1,\ldots,C_l)w(C_1)\ldots w(C_l)\right)         
+         \sum_{\substack{C_{l+1},\ldots C_n\\\disj}}w(C_{l+1},\ldots,C_n)\right\}\\
+         +\sum_{\substack{l,m>0\\l+m\leq n}}\frac{n!}{m!l!(n-m-l)!}
+         \left\{\vphantom{\sum_{\substack{C_{l+m+1},\ldots,C_{n}\\\disj}}w(C_{l+m+1})\ldots w(C_n)}\left(\sum_{C_1,\ldots,C_l}(l+1)!\varphi(C_A,C_1,\ldots,C_l)w(C_1)\ldots w(C_l)\right)\right.\\
          \times
          \left(\sum_{C_{l+1},\ldots,C_{l+m}}(m+1)!\varphi(C_B,C_{l+1},\ldots,C_{l+m})w(C_{l+1}\ldots w(C_{l+m})\right)
          \\
-         \times
-         \sum_{\substack{C_{l+m+1},\ldots,C_{n}\\\disj}}w(C_{l+m+1})\ldots w(C_n)\Biggr].
-     \end{align*}
+         \left.\left.\times
+         \sum_{\substack{C_{l+m+1},\ldots,C_{n}\\\disj}}w(C_{l+m+1})\ldots w(C_n)\right\}\right].
+     \end{multline*}
      The first two lines correspond to the sum over graphs with $A$ and $B$ connected and the following three to $A$ and $B$ disconnected. 
-     The combinatorial terms outside of the parentheses are multinomial coefficients that account for the number of ways to pick $V$ and $W$. 
-     I’m not sure what the factorials inside the parentheses are, but they definitely should be there.
+     The combinatorial factors outside of the parentheses are multinomial coefficients that account for the number of ways to pick $V$ and $W$. 
      By distributing the factorials correctly and swapping the sums we get :
      $$
      \frac{Z_\Lambda(\supp C_A\cup \supp C_B)}{Z_\Lambda}\formeq\hat Z_\Lambda(C_A)\hat Z_\Lambda(C_B)+\hat Z_\Lambda(C_A,C_B).
      $$
-     We will show that the sums converge absolutely and uniformly in $n$ {\color{red}later}, which will conclude the proof.
+     We have already shown that the sums inside the parentheses converge at the end of the proof of \cref{thm:corellation_estimates}. This concludes this proof.
  \end{proof} 
  \printbibliography
 \end{document}
